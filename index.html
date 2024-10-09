@@ -1,1 +1,84 @@
-coucou
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Cocktails</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #007bff;
+        }
+        .cocktail {
+            background-color: #fff;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .cocktail h2 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #28a745;
+        }
+        .cocktail p {
+            margin: 5px 0;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mes Cocktails</h1>
+    <div id="cocktail-list"></div>
+
+    <script>
+        // Token d'authentification fourni
+        const token = "0b6af6c7-3974-4631-b375-d23facd4efc4";
+
+        // Simulation de la liste des cocktails depuis l'API
+        const cocktails = [
+            { id: 1, name: "Mojito", description: "A refreshing cocktail made with rum, lime, mint, and soda." },
+            { id: 2, name: "Margarita", description: "A classic cocktail made with tequila, lime, and Cointreau." },
+            { id: 3, name: "Old Fashioned", description: "A whiskey cocktail with sugar, bitters, and orange zest." }
+        ];
+
+        // Fonction pour vérifier le token et afficher les cocktails
+        function displayCocktails() {
+            // Simuler une vérification du token (normalement fait côté serveur)
+            if (token === "0b6af6c7-3974-4631-b375-d23facd4efc4") {
+                const cocktailList = document.getElementById("cocktail-list");
+
+                // Ajouter chaque cocktail à la liste
+                cocktails.forEach(cocktail => {
+                    const cocktailDiv = document.createElement("div");
+                    cocktailDiv.classList.add("cocktail");
+
+                    const cocktailName = document.createElement("h2");
+                    cocktailName.textContent = cocktail.name;
+
+                    const cocktailDescription = document.createElement("p");
+                    cocktailDescription.textContent = cocktail.description;
+
+                    cocktailDiv.appendChild(cocktailName);
+                    cocktailDiv.appendChild(cocktailDescription);
+
+                    cocktailList.appendChild(cocktailDiv);
+                });
+            } else {
+                alert("Token invalide. Accès refusé.");
+            }
+        }
+
+        // Appeler la fonction au chargement de la page
+        window.onload = displayCocktails;
+    </script>
+
+</body>
+</html>
