@@ -4,81 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des Cocktails</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            margin: 0;
+        <style>
+            body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #000;
+            color: #00ffff;
+            text-align: center;
+            }
+            #cocktails {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            }
+            .cocktail {
+            border: 2px solid #00ffff;
             padding: 20px;
-        }
-        h1 {
-            color: #007bff;
-        }
-        .cocktail {
-            background-color: #fff;
-            padding: 15px;
+            margin: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 15px;
+            flex: 1 1 calc(50% - 40px);
+            max-width: calc(50% - 40px);
+            }
+            .cocktail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff;
+            }
+            h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+            }
+            h2 {
+            font-size: 2em;
             margin-bottom: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .cocktail h2 {
-            margin: 0;
-            font-size: 1.5em;
-            color: #28a745;
-        }
-        .cocktail p {
-            margin: 5px 0;
-            color: #6c757d;
-        }
-    </style>
+            text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+            }
+            p {
+            font-size: 1.2em;
+            text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+            }
+        </style>
 </head>
 <body>
-
-    <h1>Mes Cocktails</h1>
-    <div id="cocktail-list"></div>
+    <h1>Liste des Cocktails</h1>
+    <div id="cocktails"></div>
 
     <script>
-        // Token d'authentification fourni
-        const token = "0b6af6c7-3974-4631-b375-d23facd4efc4";
+        async function fetchCocktails() {
+            try {
+                const response = await fetch('http://localhost:5000/cocktails');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const cocktails = await response.json();
+                const cocktailsDiv = document.getElementById('cocktails');
 
-        // Simulation de la liste des cocktails depuis l'API
-        const cocktails = [
-            { id: 1, name: "Mojito", description: "A refreshing cocktail made with rum, lime, mint, and soda." },
-            { id: 2, name: "Margarita", description: "A classic cocktail made with tequila, lime, and Cointreau." },
-            { id: 3, name: "Old Fashioned", description: "A whiskey cocktail with sugar, bitters, and orange zest." }
-        ];
-
-        // Fonction pour vérifier le token et afficher les cocktails
-        function displayCocktails() {
-            // Simuler une vérification du token (normalement fait côté serveur)
-            if (token === "0b6af6c7-3974-4631-b375-d23facd4efc4") {
-                const cocktailList = document.getElementById("cocktail-list");
-
-                // Ajouter chaque cocktail à la liste
                 cocktails.forEach(cocktail => {
-                    const cocktailDiv = document.createElement("div");
-                    cocktailDiv.classList.add("cocktail");
-
-                    const cocktailName = document.createElement("h2");
-                    cocktailName.textContent = cocktail.name;
-
-                    const cocktailDescription = document.createElement("p");
-                    cocktailDescription.textContent = cocktail.description;
-
-                    cocktailDiv.appendChild(cocktailName);
-                    cocktailDiv.appendChild(cocktailDescription);
-
-                    cocktailList.appendChild(cocktailDiv);
+                    const cocktailDiv = document.createElement('div');
+                    cocktailDiv.className = 'cocktail';
+                    cocktailDiv.innerHTML = `<h2>${cocktail.nom}</h2><p>${cocktail.description}</p>`;
+                    cocktailsDiv.appendChild(cocktailDiv);
                 });
-            } else {
-                alert("Token invalide. Accès refusé.");
+            } catch (error) {
+                console.error('Erreur lors de la récupération des cocktails:', error);
             }
         }
 
-        // Appeler la fonction au chargement de la page
-        window.onload = displayCocktails;
+        document.addEventListener('DOMContentLoaded', fetchCocktails);
     </script>
-
 </body>
 </html>
