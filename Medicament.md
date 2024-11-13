@@ -1,5 +1,3 @@
-Voici une documentation technique en markdown du composant `Medicament`. Ce composant React affiche une interface utilisateur pour la recherche, le filtrage, et la navigation de médicaments.
-
 ---
 
 # Documentation Technique - Composant `Medicament`
