@@ -10,7 +10,7 @@ a {
     color: black;
     text-decoration: none;
     display: flex;
-    justify-content: end;
+    justify-self: end;
     padding-right: 10px;
 }
 
