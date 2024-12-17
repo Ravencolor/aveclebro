@@ -109,6 +109,9 @@ function parseQuantity(quantity) {
     return 0;
 }
 
+app.get('/livre-des-recettes', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'recettes.html'));
+});
 
 app.listen(PORT, () => {
     console.log(`Serveur en cours d'exécution sur http://localhost:${PORT}`);
