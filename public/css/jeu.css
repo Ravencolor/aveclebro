@@ -92,9 +92,21 @@ h1 {
 }
 
 .ingredient-liste-item {
-    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
     font-size: 16px;
-    color: #555;
+}
+
+.ingredient-liste-item i {
+    cursor: pointer;
+    color: red;
+    margin-left: 10px;
+}
+
+.ingredient-liste-item i:hover {
+    color: darkred;
 }
 
 button {

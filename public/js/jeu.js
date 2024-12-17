@@ -67,13 +67,25 @@ function updateGlassIngredientList() {
     const glassList = document.getElementById("ingredients-liste");
     glassList.innerHTML = '';
 
-    cocktailIngredients.forEach(ingredient => {
+    cocktailIngredients.forEach((ingredient, index) => {
         const ingredientElement = document.createElement("div");
         ingredientElement.classList.add("ingredient-liste-item");
         ingredientElement.innerHTML = `${ingredient.name} (${ingredient.quantity})`;
 
+        const trashIcon = document.createElement("i");
+        trashIcon.classList.add("fas", "fa-trash");
+        trashIcon.addEventListener("click", () => removeIngredient(index));
+
+        ingredientElement.appendChild(trashIcon);
+
         glassList.appendChild(ingredientElement);
     });
+}
+
+function removeIngredient(index) {
+    cocktailIngredients.splice(index, 1);
+
+    updateGlassIngredientList();
 }
 
 fetchIngredients();
