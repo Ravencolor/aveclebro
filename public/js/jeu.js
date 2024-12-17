@@ -96,6 +96,8 @@ async function validateCocktail() {
         quantity: ingredient.quantity
     }));
 
+    console.log("Cocktail envoyé :", ingredients);
+
     try {
         const response = await fetch("http://localhost:3000/api/validate-cocktail", {
             method: "POST",

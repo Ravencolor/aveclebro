@@ -32,6 +32,8 @@ app.get('/jeu', (req, res) => {
 app.post("/api/validate-cocktail", (req, res) => {
     const cocktailIngredients = req.body.ingredients;
 
+    console.log("Ingrédients reçus :", cocktailIngredients);
+
     const query = `
         SELECT c.id, c.name, ci.ingredient_id, i.name AS ingredient_name, ci.quantity 
         FROM cocktails c
@@ -54,7 +56,11 @@ app.post("/api/validate-cocktail", (req, res) => {
             });
         });
 
+        console.log("Détails des cocktails après boucle :", JSON.stringify(cocktails, null, 2));
+
         const cocktailMatch = Object.values(cocktails).find(cocktail => {
+            console.log("Cocktails extraits de la base :", JSON.stringify(cocktails, null, 2));
+            console.log("Cocktail à valider :", cocktailIngredients);
             return matchCocktail(cocktail.ingredients, cocktailIngredients);
         });
 
@@ -72,22 +78,37 @@ app.post("/api/validate-cocktail", (req, res) => {
     });
 });
 
-function matchCocktail(cocktailIngredients, playerIngredients) {
-    if (cocktailIngredients.length !== playerIngredients.length) {
+function matchCocktail(databaseIngredients, inputIngredients) {
+    if (databaseIngredients.length !== inputIngredients.length) {
         return false;
     }
 
-    for (let i = 0; i < cocktailIngredients.length; i++) {
-        const cocktailIngredient = cocktailIngredients[i];
-        const playerIngredient = playerIngredients.find(item => item.name === cocktailIngredient.name);
+    return databaseIngredients.every(dbIngredient => {
+        const userIngredient = inputIngredients.find(userIng =>
+            userIng.name.toLowerCase() === dbIngredient.name.toLowerCase()
+        );
 
-        if (!playerIngredient || playerIngredient.quantity !== cocktailIngredient.quantity) {
-            return false;
-        }
-    }
+        if (!userIngredient) return false;
 
-    return true;
+        const dbQuantity = parseQuantity(dbIngredient.quantity);
+        const userQuantity = parseQuantity(userIngredient.quantity);
+
+        return dbQuantity === userQuantity;
+    });
 }
+
+
+function parseQuantity(quantity) {
+    if (typeof quantity === "number") {
+        return quantity;
+    }
+    if (typeof quantity === "string") {
+        const match = quantity.match(/[\d.]+/);
+        return match ? parseFloat(match[0]) : 0;
+    }
+    return 0;
+}
+
 
 app.listen(PORT, () => {
     console.log(`Serveur en cours d'exécution sur http://localhost:${PORT}`);
