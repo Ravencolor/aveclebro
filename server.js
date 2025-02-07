@@ -116,3 +116,36 @@ app.get('/livre-des-recettes', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Serveur en cours d'exécution sur http://localhost:${PORT}`);
 });
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+app.get('/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'signup.html'));
+});
+
+app.post('/api/login', (req, res) => {
+    const { username, password } = req.body;
+    const query = "SELECT * FROM users WHERE username = ? AND password = ?";
+    db.get(query, [username, password], (err, row) => {
+        if (err) {
+            return res.status(500).json({ message: "Erreur de base de données" });
+        }
+        if (row) {
+            res.json({ message: "Connexion réussie", success: true });
+        } else {
+            res.json({ message: "Nom d'utilisateur ou mot de passe incorrect", success: false });
+        }
+    });
+});
+
+app.post('/api/signup', (req, res) => {
+    const { username, password } = req.body;
+    const query = "INSERT INTO users (username, password) VALUES (?, ?)";
+    db.run(query, [username, password], function(err) {
+        if (err) {
+            return res.status(500).json({ message: "Erreur de base de données" });
+        }
+        res.json({ message: "Inscription réussie", success: true });
+    });
+});
